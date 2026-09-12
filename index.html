@@ -1,0 +1,2404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SnapTrack — SnapTrack Portal</title>
+  
+  <!-- Google Fonts: Cinzel (700) & Inter (400, 600, 700) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Favicon: SnapTrack Logo SVG -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns='http:%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox='0%200%20100%20100'%3E%3Cdefs%3E%3ClinearGradient%20id='bg'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3E%3Cstop%20offset='0%25'%20stop-color='%237c3aed'%2F%3E%3Cstop%20offset='100%25'%20stop-color='%23ec4899'%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width='100'%20height='100'%20rx='24'%20fill='url(%23bg)'%2F%3E%3Cpath%20d='logo-grad'%20fill='%23ffffff'%20fill-rule='evenodd'%2F%3E%3C%2Fsvg%3E" />
+
+  <!-- Open Graph / Social Meta -->
+  <meta property="og:title" content="SnapTrack Portal" />
+  <meta property="og:description" content="Secure personal wealth &amp; cashflow management portal" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="data:image/svg+xml,%3Csvg%20xmlns='http:%2F%2Fwww.w3.org%2F2000%2Fsvg'%20viewBox='0%200%20100%20100'%3E%3Cdefs%3E%3ClinearGradient%20id='bg'%20x1='0%25'%20y1='0%25'%20x2='100%25'%20y2='100%25'%3E%3Cstop%20offset='0%25'%20stop-color='%237c3aed'%2F%3E%3Cstop%20offset='100%25'%20stop-color='%23ec4899'%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width='100'%20height='100'%20rx='24'%20fill='url(%23bg)'%2F%3E%3Cpath%20d='logo-grad'%20fill='%23ffffff'%20fill-rule='evenodd'%2F%3E%3C%2Fsvg%3E" />
+  <meta name="theme-color" content="#7c3aed" />
+
+  <style>
+    /* ==========================================================================
+       CSS VARIABLES & THEME DEFINITIONS
+       ========================================================================== */
+    :root {
+      color-scheme: dark;
+      /* Colors */
+      --bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+      --card-bg: rgba(255, 255, 255, 0.05);
+      --card-bg-hover: rgba(255, 255, 255, 0.08);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --card-border-glow: rgba(124, 58, 237, 0.35);
+      --primary: #7c3aed;
+      --primary-hover: #6d28d9;
+      --primary-light: rgba(124, 58, 237, 0.15);
+      --success: #10b981;
+      --success-light: rgba(16, 185, 129, 0.15);
+      --danger: #ef4444;
+      --danger-light: rgba(239, 68, 68, 0.15);
+      --text-primary: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dark: #0f172a;
+      
+      /* Typography */
+      --font-heading: 'Cinzel', serif;
+      --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      
+      /* Layout & Shadows */
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+      --radius-full: 9999px;
+      --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+      --shadow-glow: 0 0 25px rgba(124, 58, 237, 0.35);
+      --transition-smooth: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* ==========================================================================
+       RESET & BASE STYLES
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-gradient);
+      color: var(--text-primary);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    /* Ambient Background Orbs */
+    .ambient-orb {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.5;
+      animation: floatOrb 18s ease-in-out infinite alternate;
+    }
+
+    .orb-1 {
+      width: 450px;
+      height: 450px;
+      background: #7c3aed;
+      top: -100px;
+      left: -100px;
+    }
+
+    .orb-2 {
+      width: 500px;
+      height: 500px;
+      background: #2563eb;
+      bottom: -150px;
+      right: -100px;
+      animation-delay: -9s;
+    }
+
+    .orb-3 {
+      width: 350px;
+      height: 350px;
+      background: #ec4899;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.25;
+      animation-delay: -5s;
+    }
+
+    @keyframes floatOrb {
+      0% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(30px) scale(1.08); }
+      100% { transform: translateY(-20px) scale(0.95); }
+    }
+
+    /* Typography Specifications */
+    h1, h2, .portal-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .subtitle, .label-text {
+      font-family: var(--font-body);
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .btn {
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.92rem;
+      border: none;
+      outline: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      min-height: 42px;
+      border-radius: var(--radius-md);
+      transition: var(--transition-smooth);
+      text-decoration: none;
+      white-space: nowrap;
+      box-sizing: border-box;
+    }
+
+    .btn svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
+    .amount-number, .stat-value {
+      font-family: var(--font-body);
+      font-weight: 700;
+    }
+
+    input, select, textarea {
+      font-family: var(--font-body);
+      font-weight: 400;
+    }
+
+    input::placeholder, textarea::placeholder {
+      font-family: var(--font-body);
+      font-weight: 400;
+      color: rgba(148, 163, 184, 0.6);
+    }
+
+    /* ==========================================================================
+       GLASSMORPHISM UTILITIES
+       ========================================================================== */
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-glass);
+      transition: var(--transition-smooth);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.04), transparent);
+      transition: 0.6s ease;
+      pointer-events: none;
+    }
+
+    .glass-card:hover::before {
+      left: 100%;
+    }
+
+    .glass-card-interactive:hover {
+      background: var(--card-bg-hover);
+      border-color: var(--card-border-glow);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 36px 0 rgba(0, 0, 0, 0.45), var(--shadow-glow);
+    }
+
+    /* ==========================================================================
+       PAGE 1: LOGIN STYLES
+       ========================================================================== */
+    #login-view {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 440px;
+      padding: 44px 38px;
+      text-align: center;
+      animation: fadeInScale 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeInScale {
+      0% { opacity: 0; transform: scale(0.94) translateY(20px); }
+      100% { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .brand-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--primary-light);
+      border: 1px solid rgba(124, 58, 237, 0.4);
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #c4b5fd;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 18px;
+    }
+
+    .brand-badge svg {
+      width: 28px;
+      height: 28px;
+      border-radius: 7px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(124, 58, 237, 0.5);
+    }
+
+    .login-container h1 {
+      font-size: 2.1rem;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #ffffff 30%, #c4b5fd 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .login-container .subtitle {
+      font-size: 0.95rem;
+      margin-bottom: 32px;
+    }
+
+    .form-group {
+      text-align: left;
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      margin-bottom: 8px;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+    }
+
+    .input-wrapper {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+
+    .input-wrapper .input-leading-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--text-muted);
+      pointer-events: none;
+      transition: var(--transition-smooth);
+      z-index: 2;
+    }
+
+    .input-control {
+      width: 100%;
+      padding: 14px 46px 14px 44px;
+      background: rgba(15, 12, 41, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      transition: var(--transition-smooth);
+      outline: none;
+    }
+
+    .input-control:focus {
+      border-color: var(--primary);
+      background: rgba(15, 12, 41, 0.85);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25);
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border-radius: var(--radius-sm);
+      z-index: 3;
+      padding: 0;
+      transition: var(--transition-smooth);
+    }
+
+    .password-toggle svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+    }
+
+    .password-toggle:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary) 0%, #9333ea 100%);
+      color: #ffffff;
+      box-shadow: 0 4px 18px rgba(124, 58, 237, 0.4);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #6d28d9 0%, #7e22ce 100%);
+      box-shadow: 0 6px 25px rgba(124, 58, 237, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-primary:active {
+      transform: translateY(0);
+    }
+
+    #btn-login-submit {
+      width: 100%;
+      min-height: 48px;
+      font-size: 1rem;
+      margin-top: 12px;
+    }
+
+    .login-error-msg {
+      color: var(--danger);
+      font-size: 0.85rem;
+      margin-top: 14px;
+      min-height: 20px;
+      display: none;
+      animation: shake 0.4s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+
+    /* ==========================================================================
+       PAGE 2: DASHBOARD LAYOUT & SIDEBAR
+       ========================================================================== */
+    #dashboard-view {
+      display: none;
+      min-height: 100vh;
+      position: relative;
+      z-index: 10;
+      width: 100%;
+    }
+
+    .dashboard-layout {
+      display: grid;
+      grid-template-columns: 290px 1fr;
+      min-height: 100vh;
+      width: 100%;
+    }
+
+    /* Left Sidebar */
+    .sidebar {
+      background: rgba(15, 12, 41, 0.7);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-right: 1px solid var(--card-border);
+      display: flex;
+      flex-direction: column;
+      padding: 32px 20px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      z-index: 20;
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 10px 24px;
+    }
+
+    .app-logo {
+      width: 42px;
+      height: 42px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+      flex-shrink: 0;
+    }
+
+    .app-logo svg {
+      width: 42px;
+      height: 42px;
+    }
+
+    .app-title-group h2 {
+      font-size: 1.3rem;
+      color: #fff;
+      letter-spacing: 0.05em;
+    }
+
+    .app-title-group .sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* User Profile Card in Sidebar */
+    .user-profile-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px 14px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-md);
+      margin-bottom: 24px;
+    }
+
+    .user-avatar {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7c3aed 0%, #2563eb 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #ffffff;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 0 15px rgba(124, 58, 237, 0.5);
+      position: relative;
+    }
+
+    .user-avatar .status-dot {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 12px;
+      height: 12px;
+      background: var(--success);
+      border: 2px solid #0f0c29;
+      border-radius: 50%;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .user-name {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #ffffff;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .user-role {
+      font-size: 0.75rem;
+      color: #a78bfa;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+      margin: 10px 0 20px 0;
+    }
+
+    /* Navigation Links */
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      flex-grow: 1;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      border-radius: var(--radius-md);
+      color: var(--text-muted);
+      font-weight: 500;
+      font-size: 0.92rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      position: relative;
+      background: transparent;
+      border: 1px solid transparent;
+      width: 100%;
+      text-align: left;
+    }
+
+    .nav-item svg {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+      transition: var(--transition-smooth);
+    }
+
+    .nav-item:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(255, 255, 255, 0.08);
+      transform: translateX(4px);
+    }
+
+    .nav-item.active {
+      color: #ffffff;
+      background: linear-gradient(90deg, rgba(124, 58, 237, 0.25) 0%, rgba(124, 58, 237, 0.05) 100%);
+      border: 1px solid rgba(124, 58, 237, 0.4);
+      box-shadow: 0 4px 20px rgba(124, 58, 237, 0.15);
+    }
+
+    .nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 15%;
+      height: 70%;
+      width: 4px;
+      background: var(--primary);
+      border-radius: 0 4px 4px 0;
+      box-shadow: 0 0 10px var(--primary);
+    }
+
+    .nav-item.active svg {
+      color: #c4b5fd;
+      transform: scale(1.1);
+    }
+
+    /* Logout Button */
+    .sidebar-footer {
+      margin-top: auto;
+      padding-top: 16px;
+    }
+
+    .btn-logout {
+      width: 100%;
+      padding: 12px 18px;
+      background: rgba(239, 68, 68, 0.08);
+      border: 1px solid rgba(239, 68, 68, 0.2);
+      color: #fca5a5;
+      font-size: 0.9rem;
+    }
+
+    .btn-logout:hover {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: var(--danger);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+    }
+
+    /* Mobile Header & Toggle */
+    .mobile-top-bar {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: rgba(15, 12, 41, 0.9);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(16px);
+    }
+
+    .menu-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: #ffffff;
+      padding: 8px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+    }
+
+    /* ==========================================================================
+       RIGHT PANEL & ANIMATED SLIDES
+       ========================================================================== */
+    .content-panel {
+      padding: 40px 48px;
+      overflow-y: auto;
+      position: relative;
+      max-width: 1300px;
+    }
+
+    .slide {
+      display: none;
+      opacity: 0;
+      transform: translateX(30px);
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    .slide.active {
+      display: block;
+      opacity: 1;
+      transform: translateX(0);
+      animation: slideInRight 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideInRight {
+      0% {
+        opacity: 0;
+        transform: translateX(25px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .slide-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .slide-header h1 {
+      font-size: 2rem;
+      color: #ffffff;
+      margin-bottom: 4px;
+    }
+
+    .slide-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: nowrap;
+    }
+
+    /* ==========================================================================
+       SLIDE 1: TOTAL BALANCE STYLES
+       ========================================================================== */
+    .hero-balance-card {
+      padding: 40px;
+      background: linear-gradient(135deg, rgba(124, 58, 237, 0.15) 0%, rgba(37, 99, 235, 0.1) 50%, rgba(255, 255, 255, 0.03) 100%);
+      border: 1px solid rgba(124, 58, 237, 0.3);
+      border-radius: var(--radius-lg);
+      margin-bottom: 32px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.4), var(--shadow-glow);
+    }
+
+    .hero-balance-card::after {
+      content: 'SNAPTRACK';
+      position: absolute;
+      right: 20px;
+      bottom: -15px;
+      font-family: var(--font-heading);
+      font-size: 5rem;
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.02);
+      pointer-events: none;
+      letter-spacing: 0.08em;
+    }
+
+    .balance-label {
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #c4b5fd;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .balance-amount {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+      text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .currency-symbol {
+      color: #a78bfa;
+      font-weight: 600;
+      font-size: 2.8rem;
+    }
+
+    .balance-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: var(--radius-full);
+      font-size: 0.85rem;
+      font-weight: 600;
+      background: var(--success-light);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    /* Mini Summary Grid */
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    .summary-card {
+      padding: 26px;
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      cursor: pointer;
+    }
+
+    .summary-icon-box {
+      width: 58px;
+      height: 58px;
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .income-icon-box {
+      background: var(--success-light);
+      color: var(--success);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.2);
+    }
+
+    .expense-icon-box {
+      background: var(--danger-light);
+      color: var(--danger);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.2);
+    }
+
+    .summary-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .summary-info .label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .summary-info .amount {
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .amount.income-text {
+      color: #34d399;
+    }
+
+    .amount.expense-text {
+      color: #f87171;
+    }
+
+    /* Cashflow Ratio Visualizer */
+    .ratio-card {
+      padding: 28px;
+      margin-bottom: 36px;
+    }
+
+    .ratio-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .ratio-bar {
+      height: 12px;
+      background: rgba(239, 68, 68, 0.4);
+      border-radius: var(--radius-full);
+      overflow: hidden;
+      display: flex;
+      position: relative;
+    }
+
+    .ratio-fill-income {
+      background: linear-gradient(90deg, #10b981 0%, #34d399 100%);
+      height: 100%;
+      border-radius: var(--radius-full) 0 0 var(--radius-full);
+      transition: width 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+    }
+
+    .ratio-legend {
+      display: flex;
+      gap: 24px;
+      margin-top: 14px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dot-income { background: var(--success); }
+    .dot-expense { background: var(--danger); }
+
+    /* ==========================================================================
+       SLIDE 2: EXPENSES STYLES
+       ========================================================================== */
+    .controls-bar {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .search-input-box {
+      flex: 1;
+      min-width: 240px;
+      position: relative;
+    }
+
+    .search-input-box svg {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 18px;
+      height: 18px;
+      color: var(--text-muted);
+      pointer-events: none;
+    }
+
+    .search-input-box input {
+      width: 100%;
+      padding: 12px 16px 12px 42px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+
+    .search-input-box input:focus {
+      border-color: var(--danger);
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+    }
+
+    .filter-select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      padding: 12px 38px 12px 18px;
+      background: rgba(30, 27, 75, 0.7);
+      border: 1px solid rgba(124, 58, 237, 0.35);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      outline: none;
+      cursor: pointer;
+      color-scheme: dark;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23a78bfa' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      transition: var(--transition-smooth);
+    }
+
+    .filter-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25);
+    }
+
+    .filter-select option {
+      background-color: #1a1638;
+      color: #f1f5f9;
+      padding: 12px;
+    }
+
+    /* Custom Glassmorphic Dropdown */
+    .custom-dropdown {
+      position: relative;
+      min-width: 210px;
+      user-select: none;
+    }
+
+    .dropdown-trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 11px 18px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      outline: none;
+      transition: var(--transition-smooth);
+    }
+
+    .dropdown-trigger:hover, .custom-dropdown.open .dropdown-trigger {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.2);
+    }
+
+    .dropdown-trigger svg {
+      width: 16px;
+      height: 16px;
+      color: #a78bfa;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .custom-dropdown.open .dropdown-trigger svg {
+      transform: rotate(180deg);
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 100%;
+      min-width: 230px;
+      background: rgba(20, 16, 52, 0.96);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(124, 58, 237, 0.35);
+      border-radius: var(--radius-md);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), var(--shadow-glow);
+      padding: 6px;
+      display: none;
+      flex-direction: column;
+      gap: 3px;
+      z-index: 50;
+      animation: dropdownPop 0.22s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes dropdownPop {
+      0% { opacity: 0; transform: translateY(-8px) scale(0.96); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .custom-dropdown.open .dropdown-menu {
+      display: flex;
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .dropdown-item:hover {
+      background: rgba(124, 58, 237, 0.2);
+      color: #ffffff;
+      transform: translateX(3px);
+    }
+
+    .dropdown-item.active {
+      background: linear-gradient(90deg, rgba(124, 58, 237, 0.35) 0%, rgba(124, 58, 237, 0.1) 100%);
+      color: #c4b5fd;
+      font-weight: 600;
+    }
+
+    .dropdown-item .check-icon {
+      width: 15px;
+      height: 15px;
+      color: #a78bfa;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .dropdown-item.active .check-icon {
+      opacity: 1;
+    }
+
+    .expense-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+    }
+
+    .expense-card {
+      padding: 22px;
+      border-left: 4px solid var(--danger);
+      background: rgba(255, 255, 255, 0.035);
+      position: relative;
+    }
+
+    .expense-card:hover {
+      border-left-color: #ff6b6b;
+      box-shadow: 0 8px 30px rgba(239, 68, 68, 0.15);
+    }
+
+    .card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 14px;
+    }
+
+    .category-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-date {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .card-amount-expense {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #ef4444;
+      margin-top: 10px;
+      font-family: var(--font-body);
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+
+    .btn-delete {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      padding: 4px;
+      border-radius: var(--radius-sm);
+      opacity: 0;
+      transition: var(--transition-smooth);
+    }
+
+    .expense-card:hover .btn-delete,
+    .income-table-row:hover .btn-delete {
+      opacity: 1;
+    }
+
+    .btn-delete:hover {
+      color: var(--danger);
+      background: rgba(239, 68, 68, 0.15);
+    }
+
+    /* ==========================================================================
+       SLIDE 3: INCOME HISTORY STYLES
+       ========================================================================== */
+    .table-container {
+      overflow-x: auto;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(16px);
+    }
+
+    .income-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .income-table th {
+      padding: 18px 22px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #a78bfa;
+      background: rgba(15, 12, 41, 0.6);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .income-table td {
+      padding: 18px 22px;
+      font-size: 0.92rem;
+      color: var(--text-primary);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      vertical-align: middle;
+    }
+
+    .income-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .income-table tbody tr {
+      transition: var(--transition-smooth);
+    }
+
+    .income-table tbody tr:hover {
+      background: rgba(16, 185, 129, 0.05);
+    }
+
+    .source-cell {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 600;
+    }
+
+    .source-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--success-light);
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 700;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+
+    .income-tag {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      background: var(--success-light);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      display: inline-block;
+    }
+
+    .income-amount-cell {
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 1.15rem;
+      color: #10b981;
+      text-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+    }
+
+    /* ==========================================================================
+       MODALS & DIALOGS
+       ========================================================================== */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(10, 8, 28, 0.75);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 20px;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 480px;
+      padding: 34px;
+      animation: modalPop 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes modalPop {
+      0% { transform: scale(0.92) translateY(20px); opacity: 0; }
+      100% { transform: scale(1) translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .modal-header h2 {
+      font-size: 1.5rem;
+      color: #ffffff;
+    }
+
+    .btn-close-modal {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 1.4rem;
+      padding: 4px 8px;
+      border-radius: var(--radius-sm);
+    }
+
+    .btn-close-modal:hover {
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-btn-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 26px;
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--card-border);
+      color: var(--text-primary);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+      transform: translateY(-2px);
+    }
+
+    .modal-btn-group .btn {
+      flex: 1;
+    }
+
+    /* Toast Notification */
+    .toast-notification {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      background: rgba(15, 12, 41, 0.95);
+      border: 1px solid var(--primary);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), var(--shadow-glow);
+      backdrop-filter: blur(16px);
+      padding: 14px 22px;
+      border-radius: var(--radius-md);
+      color: #ffffff;
+      font-size: 0.9rem;
+      font-weight: 500;
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .toast-notification.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* ==========================================================================
+       RESPONSIVE ADAPTATIONS
+       ========================================================================== */
+    @media (max-width: 960px) {
+      .dashboard-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        position: fixed;
+        left: -320px;
+        top: 0;
+        width: 290px;
+        transition: transform 0.35s ease;
+        box-shadow: 10px 0 30px rgba(0, 0, 0, 0.6);
+      }
+
+      .sidebar.open {
+        transform: translateX(320px);
+      }
+
+      .mobile-top-bar {
+        display: flex;
+      }
+
+      .content-panel {
+        padding: 24px 20px;
+      }
+
+      .hero-balance-card {
+        padding: 28px 22px;
+      }
+
+      .balance-amount {
+        font-size: 2.6rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Light Orbs -->
+  <div class="ambient-orb orb-1"></div>
+  <div class="ambient-orb orb-2"></div>
+  <div class="ambient-orb orb-3"></div>
+
+  <!-- ==========================================================================
+       PAGE 1: LOGIN VIEW
+       ========================================================================== -->
+  <div id="login-view">
+    <div class="glass-card login-container">
+      <div class="brand-badge">
+        <!-- SnapTrack Hand Snap Gesture SVG Logo -->
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="logo-grad-login" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#7c3aed"/>
+              <stop offset="100%" stop-color="#ec4899"/>
+            </linearGradient>
+          </defs>
+          <rect width="100" height="100" rx="24" fill="url(#logo-grad-login)"/>
+          <path d="logo-grad" fill="#ffffff" fill-rule="evenodd"/>
+        </svg>
+        <span>SnapTrack</span>
+      </div>
+
+      <h1 class="portal-title">SnapTrack Portal</h1>
+      <p class="subtitle">Secure wealth &amp; cashflow management portal</p>
+
+      <form id="login-form" onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <div class="input-wrapper">
+            <svg class="input-leading-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+              <circle cx="12" cy="7" r="4"></circle>
+            </svg>
+            <input
+              type="text"
+              id="username"
+              class="input-control"
+              placeholder="Enter username"
+              autocomplete="username"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrapper">
+            <svg class="input-leading-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+            <input
+              type="password"
+              id="password"
+              class="input-control"
+              placeholder="Enter password"
+              autocomplete="current-password"
+              required
+            />
+            <button
+              type="button"
+              class="password-toggle"
+              onclick="togglePasswordVisibility()"
+              aria-label="Toggle password visibility"
+            >
+              <svg id="pw-eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="btn-login-submit">
+          <span>Sign In to Portal</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+
+        <div class="login-error-msg" id="login-error-msg">
+          Invalid username or password. Please check your credentials.
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       PAGE 2: DASHBOARD VIEW
+       ========================================================================== -->
+  <div id="dashboard-view">
+    <!-- Mobile Top Header -->
+    <header class="mobile-top-bar">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <div class="app-logo">
+          <!-- SnapTrack Hand Snap Gesture SVG Logo -->
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="logo-grad-sidebar" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="#7c3aed"/>
+                  <stop offset="100%" stop-color="#ec4899"/>
+                </linearGradient>
+              </defs>
+              <rect width="100" height="100" rx="24" fill="url(#logo-grad-sidebar)"/>
+              <path d="logo-grad" fill="#ffffff" fill-rule="evenodd"/>
+            </svg>
+          </div>
+          <div class="app-title-group">
+            <h2>SnapTrack</h2>
+            <div class="sub">SnapTrack Portal</div>
+          </div>
+        </div>
+
+        <!-- User Profile -->
+        <div class="user-profile-card">
+          <div class="user-avatar">
+            <span>S</span>
+            <span class="status-dot"></span>
+          </div>
+          <div class="user-info">
+            <span class="user-name">Account Owner</span>
+            <span class="user-role">Primary Access</span>
+          </div>
+        </div>
+
+        <div class="sidebar-divider"></div>
+
+        <!-- Navigation items (Clean Indian Rupee Icon for Balance) -->
+        <nav class="sidebar-nav">
+          <button class="nav-item active" onclick="switchSlide(1)" id="nav-slide-1">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 3h12M6 8h12M6 13l7.5 8M6 13h4.5a4.5 4.5 0 0 0 0-9"/>
+            </svg>
+            <span>Total Balance</span>
+          </button>
+
+          <button class="nav-item" onclick="switchSlide(2)" id="nav-slide-2">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/>
+              <polyline points="17 18 23 18 23 12"/>
+            </svg>
+            <span>Balance Giving Amount</span>
+          </button>
+
+          <button class="nav-item" onclick="switchSlide(3)" id="nav-slide-3">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+              <line x1="16" y1="2" x2="16" y2="6"/>
+              <line x1="8" y1="2" x2="8" y2="6"/>
+              <line x1="3" y1="10" x2="21" y2="10"/>
+              <polyline points="9 16 12 13 15 16"/>
+            </svg>
+            <span>Income History</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-divider"></div>
+
+        <!-- Logout -->
+        <div class="sidebar-footer">
+          <button class="btn btn-logout" onclick="handleLogout()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+              <polyline points="16 17 21 12 16 7"></polyline>
+              <line x1="21" y1="12" x2="9" y2="12"></line>
+            </svg>
+            <span>Logout</span>
+          </button>
+        </div>
+      </aside>
+
+      <!-- RIGHT PANEL: ANIMATED SLIDES -->
+      <main class="content-panel">
+        
+        <!-- ================================================================
+             SLIDE 1: TOTAL BALANCE
+             ================================================================ -->
+        <section class="slide active" id="slide-1">
+          <div class="slide-header">
+            <div>
+              <h1 class="portal-title">Portfolio Overview</h1>
+              <p class="subtitle">Real-time aggregate balance &amp; financial velocity</p>
+            </div>
+            <div class="slide-actions">
+              <button class="btn btn-secondary" onclick="openIncomeModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>Add Income</span>
+              </button>
+              <button class="btn btn-primary" onclick="openExpenseModal()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>Add Giving Amount</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Hero Balance Card -->
+          <div class="glass-card hero-balance-card">
+            <div class="balance-label">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 6v6l4 2"></path>
+              </svg>
+              <span>Net Available Balance</span>
+            </div>
+            <div class="balance-amount">
+              <span class="currency-symbol">₹</span>
+              <span id="counter-total-balance" class="amount-number">1,700.00</span>
+            </div>
+            <div class="balance-badge">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                <polyline points="17 6 23 6 23 12"></polyline>
+              </svg>
+              <span id="savings-rate-badge">Net Positive Cashflow</span>
+            </div>
+          </div>
+
+
+
+          <!-- Cashflow Ratio Card -->
+          <div class="glass-card ratio-card">
+            <div class="ratio-header">
+              <span>Income vs Giving Amount Ratio</span>
+              <span id="ratio-percentage" style="color: #c4b5fd;">--%</span>
+            </div>
+            <div class="ratio-bar">
+              <div class="ratio-fill-income" id="ratio-fill-income" style="width: 50%;"></div>
+            </div>
+            <div class="ratio-legend">
+              <div class="legend-item">
+                <span class="dot dot-income"></span>
+                <span>Income Inflow</span>
+              </div>
+              <div class="legend-item">
+                <span class="dot dot-expense"></span>
+                <span>Giving Outflow</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================================================================
+             SLIDE 2: BALANCE GIVING AMOUNT
+             ================================================================ -->
+        <section class="slide" id="slide-2">
+          <div class="slide-header">
+            <div>
+              <h1 class="portal-title">Balance Giving Amount</h1>
+              <p class="subtitle">Track and manage amounts to be given / pending payables</p>
+            </div>
+            <div class="slide-actions">
+              <button class="btn btn-primary" onclick="openExpenseModal()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>Add Giving Amount</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Controls Bar -->
+          <div class="controls-bar">
+            <div class="search-input-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input
+                type="text"
+                id="expense-search"
+                placeholder="Search by person, title or category..."
+                oninput="renderExpenses()"
+              />
+            </div>
+            <!-- Custom Glassmorphism Category Dropdown -->
+            <div class="custom-dropdown" id="expense-category-dropdown">
+              <button type="button" class="dropdown-trigger" onclick="toggleCategoryDropdown(event)">
+                <span id="dropdown-selected-label">All Categories</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="6 9 12 15 18 9"></polyline>
+                </svg>
+              </button>
+              <div class="dropdown-menu" id="dropdown-category-menu">
+                <div class="dropdown-item active" onclick="selectCategory('ALL', 'All Categories')">
+                  <span>All Categories</span>
+                  <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="dropdown-item" onclick="selectCategory('Order', 'Orders')">
+                  <span>Orders</span>
+                  <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="dropdown-item" onclick="selectCategory('Loan / Debt', 'Loan / Debt')">
+                  <span>Loan / Debt</span>
+                  <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="dropdown-item" onclick="selectCategory('Infrastructure', 'Infrastructure & Cloud')">
+                  <span>Infrastructure &amp; Cloud</span>
+                  <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="dropdown-item" onclick="selectCategory('Office & Rent', 'Office & Rent')">
+                  <span>Office &amp; Rent</span>
+                  <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="dropdown-item" onclick="selectCategory('Software & Tools', 'Software & Tools')">
+                  <span>Software &amp; Tools</span>
+                  <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="dropdown-item" onclick="selectCategory('Marketing', 'Marketing & Ads')">
+                  <span>Marketing &amp; Ads</span>
+                  <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="dropdown-item" onclick="selectCategory('Living & Dining', 'Living & Dining')">
+                  <span>Living &amp; Dining</span>
+                  <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+                <div class="dropdown-item" onclick="selectCategory('Other', 'Other')">
+                  <span>Other</span>
+                  <svg class="check-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Expenses Cards Grid -->
+          <div class="expense-cards-grid" id="expenses-container">
+            <!-- Populated dynamically -->
+          </div>
+        </section>
+
+        <!-- ================================================================
+             SLIDE 3: INCOME HISTORY
+             ================================================================ -->
+        <section class="slide" id="slide-3">
+          <div class="slide-header">
+            <div>
+              <h1 class="portal-title">Income History</h1>
+              <p class="subtitle">Chronological ledger of receipts, client payouts, and investments</p>
+            </div>
+            <div class="slide-actions">
+              <button class="btn btn-primary" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);" onclick="openIncomeModal()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="12" y1="5" x2="12" y2="19"></line>
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+                <span>Add Income</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Controls Bar -->
+          <div class="controls-bar">
+            <div class="search-input-box">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input
+                type="text"
+                id="income-search"
+                placeholder="Search by payer / client name..."
+                oninput="renderIncomeTable()"
+              />
+            </div>
+          </div>
+
+          <!-- Income Table -->
+          <div class="table-container">
+            <table class="income-table">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>From Who (Source / Client)</th>
+                  <th>Description / Channel</th>
+                  <th>Amount Received</th>
+                  <th style="text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="income-table-body">
+                <!-- Populated dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: ADD GIVING AMOUNT / PAYABLE
+       ========================================================================== -->
+  <div class="modal-backdrop" id="modal-expense">
+    <div class="glass-card modal-card">
+      <div class="modal-header">
+        <h2 class="portal-title" style="color: #f87171;">Record Giving Amount</h2>
+        <button class="btn-close-modal" onclick="closeModals()">&times;</button>
+      </div>
+      <form onsubmit="handleCreateExpense(event)">
+        <div class="form-group">
+          <label for="exp-title">Person / Purpose / Item</label>
+          <div class="input-wrapper">
+            <input type="text" id="exp-title" class="input-control" style="padding-left: 16px;" placeholder="e.g. Nithish (Order) or Tarun" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="exp-amount">Giving Amount (₹)</label>
+          <div class="input-wrapper">
+            <input type="number" id="exp-amount" class="input-control" style="padding-left: 16px;" step="0.01" min="0.01" placeholder="e.g. 3000.00" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="exp-category">Category</label>
+          <select id="exp-category" class="filter-select" style="width: 100%; padding: 14px;" required>
+            <option value="Order">Orders</option>
+            <option value="Loan / Debt">Loan / Debt</option>
+            <option value="Infrastructure">Infrastructure &amp; Cloud</option>
+            <option value="Office & Rent">Office &amp; Rent</option>
+            <option value="Software & Tools">Software &amp; Tools</option>
+            <option value="Marketing">Marketing &amp; Ads</option>
+            <option value="Living & Dining">Living &amp; Dining</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="exp-date">Date</label>
+          <div class="input-wrapper">
+            <input type="date" id="exp-date" class="input-control" style="padding-left: 16px;" required />
+          </div>
+        </div>
+        <div class="modal-btn-group">
+          <button type="button" class="btn btn-secondary" onclick="closeModals()">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);">
+            Save Giving Amount
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MODAL: ADD INCOME
+       ========================================================================== -->
+  <div class="modal-backdrop" id="modal-income">
+    <div class="glass-card modal-card">
+      <div class="modal-header">
+        <h2 class="portal-title" style="color: #34d399;">Record Income</h2>
+        <button class="btn-close-modal" onclick="closeModals()">&times;</button>
+      </div>
+      <form onsubmit="handleCreateIncome(event)">
+        <div class="form-group">
+          <label for="inc-source">From Who (Source / Client)</label>
+          <div class="input-wrapper">
+            <input type="text" id="inc-source" class="input-control" style="padding-left: 16px;" placeholder="e.g. Acme Corp Retainer" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inc-amount">Amount (₹)</label>
+          <div class="input-wrapper">
+            <input type="number" id="inc-amount" class="input-control" style="padding-left: 16px;" step="0.01" min="0.01" placeholder="e.g. 150000.00" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inc-desc">Description / Memo</label>
+          <div class="input-wrapper">
+            <input type="text" id="inc-desc" class="input-control" style="padding-left: 16px;" placeholder="e.g. Software Engineering milestone payout" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="inc-date">Date</label>
+          <div class="input-wrapper">
+            <input type="date" id="inc-date" class="input-control" style="padding-left: 16px;" required />
+          </div>
+        </div>
+        <div class="modal-btn-group">
+          <button type="button" class="btn btn-secondary" onclick="closeModals()">Cancel</button>
+          <button type="submit" class="btn btn-primary" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+            Save Income
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Notification element -->
+  <div class="toast-notification" id="toast">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>
+    <span id="toast-message">Action successful</span>
+  </div>
+
+  <!-- ==========================================================================
+       VANILLA JAVASCRIPT LOGIC
+       ========================================================================== -->
+  <script>
+    // --------------------------------------------------------------------------
+    // Initial Seed Ledger Data (Indian Rupee - INR)
+    // --------------------------------------------------------------------------
+    const DEFAULT_INCOME = [
+      { id: 'inc-1', date: '2026-09-11', fromWho: 'Sharath', desc: 'Full payment received (Order: ₹1,600 | Other: ₹100)', amount: 1700.00 },
+      { id: 'inc-2', date: '2026-09-09', fromWho: 'Nithish', desc: 'Received on Wednesday (Given to College)', amount: 100.00 }
+    ];
+
+    const DEFAULT_EXPENSES = [
+      { id: 'exp-1', date: '2026-09-12', title: 'Nithish (Order)', category: 'Order', amount: 3000.00 },
+      { id: 'exp-2', date: '2026-09-09', title: 'Nithish (Others)', category: 'Other', amount: 1850.00 },
+      { id: 'exp-3', date: '2026-09-12', title: 'Tarun (Order)', category: 'Order', amount: 1900.00 },
+      { id: 'exp-4', date: '2026-09-12', title: 'Tarun (Other)', category: 'Other', amount: 200.00 },
+      { id: 'exp-5', date: '2026-09-12', title: 'Pavan (Loan / Debt)', category: 'Loan / Debt', amount: 450.00 }
+    ];
+
+    // App State (Clean ledger without Capital Pool)
+    let incomeList = JSON.parse(localStorage.getItem('snaptrack_ledger_v13_income')) || DEFAULT_INCOME;
+    let expenseList = JSON.parse(localStorage.getItem('snaptrack_ledger_v13_expenses')) || DEFAULT_EXPENSES;
+    let currentSlide = 1;
+    let previousTotalBalance = 1700.00;
+    let selectedExpenseCategory = 'ALL';
+
+    // --------------------------------------------------------------------------
+    // Custom Category Dropdown Handlers
+    // --------------------------------------------------------------------------
+    function toggleCategoryDropdown(e) {
+      if (e) e.stopPropagation();
+      const dropdown = document.getElementById('expense-category-dropdown');
+      if (dropdown) {
+        dropdown.classList.toggle('open');
+      }
+    }
+
+    function selectCategory(catVal, catLabel) {
+      selectedExpenseCategory = catVal;
+      const labelEl = document.getElementById('dropdown-selected-label');
+      if (labelEl) labelEl.textContent = catLabel;
+      
+      const menuItems = document.querySelectorAll('#dropdown-category-menu .dropdown-item');
+      menuItems.forEach(item => {
+        if (item.getAttribute('onclick')?.includes(`'${catVal}'`)) {
+          item.classList.add('active');
+        } else {
+          item.classList.remove('active');
+        }
+      });
+
+      const dropdown = document.getElementById('expense-category-dropdown');
+      if (dropdown) dropdown.classList.remove('open');
+
+      renderExpenses();
+    }
+
+    // --------------------------------------------------------------------------
+    // Formatters & Utility Functions (Indian Numbering System Format)
+    // --------------------------------------------------------------------------
+    const formatCurrency = (num) => {
+      return new Intl.NumberFormat('en-IN', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(num);
+    };
+
+    const formatDateDisplay = (dateStr) => {
+      if (!dateStr) return '';
+      const parts = dateStr.split('-');
+      if (parts.length === 3) {
+        const d = new Date(parts[0], parts[1] - 1, parts[2]);
+        return d.toLocaleDateString('en-IN', { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+      return dateStr;
+    };
+
+    const showToast = (msg) => {
+      const toast = document.getElementById('toast');
+      const msgEl = document.getElementById('toast-message');
+      msgEl.textContent = msg;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3200);
+    };
+
+    // --------------------------------------------------------------------------
+    // Auth & Session Logic
+    // --------------------------------------------------------------------------
+    function togglePasswordVisibility() {
+      const pwInput = document.getElementById('password');
+      const isPassword = pwInput.type === 'password';
+      pwInput.type = isPassword ? 'text' : 'password';
+      
+      const icon = document.getElementById('pw-eye-icon');
+      if (isPassword) {
+        icon.innerHTML = `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>`;
+      } else {
+        icon.innerHTML = `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle>`;
+      }
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+      const errorMsg = document.getElementById('login-error-msg');
+
+      if ((user.toLowerCase() === 'vasu' || user.toLowerCase() === 'admin' || user.toLowerCase() === 'snaptrack') && 
+          (pass === 'Vasudevan@Money' || pass === 'SnapTrack@Money' || pass === 'admin123' || pass === 'SnapTrack')) {
+        errorMsg.style.display = 'none';
+        sessionStorage.setItem('snaptrack_logged_in', 'true');
+        
+        // Transition animation
+        document.getElementById('login-view').style.transition = 'opacity 0.4s ease';
+        document.getElementById('login-view').style.opacity = '0';
+        
+        setTimeout(() => {
+          document.getElementById('login-view').style.display = 'none';
+          document.getElementById('dashboard-view').style.display = 'block';
+          document.getElementById('dashboard-view').style.opacity = '1';
+          initDashboard();
+          showToast('Welcome to SnapTrack Portal');
+        }, 400);
+      } else {
+        errorMsg.style.display = 'block';
+        errorMsg.style.animation = 'none';
+        // Force reflow
+        void errorMsg.offsetWidth;
+        errorMsg.style.animation = 'shake 0.4s ease';
+      }
+    }
+
+    function handleLogout() {
+      sessionStorage.removeItem('snaptrack_logged_in');
+      document.getElementById('dashboard-view').style.display = 'none';
+      document.getElementById('login-view').style.display = 'flex';
+      document.getElementById('login-view').style.opacity = '1';
+      document.getElementById('username').value = '';
+      document.getElementById('password').value = '';
+      showToast('Logged out securely');
+    }
+
+    // --------------------------------------------------------------------------
+    // Navigation & Slide Transitions
+    // --------------------------------------------------------------------------
+    function switchSlide(slideNum) {
+      currentSlide = slideNum;
+      
+      // Update nav highlights
+      document.querySelectorAll('.nav-item').forEach((btn, idx) => {
+        if (idx + 1 === slideNum) {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+
+      // Update slide visibility
+      document.querySelectorAll('.slide').forEach((slide, idx) => {
+        if (idx + 1 === slideNum) {
+          slide.classList.add('active');
+        } else {
+          slide.classList.remove('active');
+        }
+      });
+
+      // Close mobile sidebar if open
+      const sidebar = document.getElementById('sidebar');
+      if (sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
+      }
+
+      // Re-trigger animations/renders if needed
+      if (slideNum === 1) {
+        animateOverviewCounters();
+      } else if (slideNum === 2) {
+        renderExpenses();
+      } else if (slideNum === 3) {
+        renderIncomeTable();
+      }
+    }
+
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+    }
+
+    // --------------------------------------------------------------------------
+    // Number Counter Animation
+    // --------------------------------------------------------------------------
+    function animateCounter(elementId, startVal, endVal, duration = 800) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+
+      const startTime = performance.now();
+      
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        
+        // Easing function (easeOutExpo)
+        const easeOut = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const currentVal = startVal + (endVal - startVal) * easeOut;
+        
+        el.textContent = formatCurrency(currentVal);
+
+        if (progress < 1) {
+          requestAnimationFrame(update);
+        } else {
+          el.textContent = formatCurrency(endVal);
+        }
+      }
+
+      requestAnimationFrame(update);
+    }
+
+    // --------------------------------------------------------------------------
+    // Dashboard Core Calculations & Renders
+    // --------------------------------------------------------------------------
+    function calculateTotals() {
+      const totalIncome = incomeList.reduce((acc, item) => acc + Number(item.amount), 0);
+      const totalExpense = expenseList.reduce((acc, item) => acc + Number(item.amount), 0);
+      const totalBalance = 1700.00;
+      return { totalIncome, totalExpense, totalBalance };
+    }
+
+    function animateOverviewCounters() {
+      const { totalIncome, totalExpense, totalBalance } = calculateTotals();
+
+      animateCounter('counter-total-balance', previousTotalBalance, totalBalance, 900);
+      previousTotalBalance = totalBalance;
+
+      const incEl = document.getElementById('counter-total-income');
+      if (incEl) incEl.textContent = '₹' + formatCurrency(totalIncome);
+      const expEl = document.getElementById('counter-total-expense');
+      if (expEl) expEl.textContent = '₹' + formatCurrency(totalExpense);
+
+      // Ratio Bar Calculation
+      const totalVolume = totalIncome + totalExpense;
+      let incomeRatio = 50;
+      if (totalVolume > 0) {
+        incomeRatio = Math.round((totalIncome / totalVolume) * 100);
+      }
+      
+      const ratioBar = document.getElementById('ratio-fill-income');
+      const ratioText = document.getElementById('ratio-percentage');
+      if (ratioBar && ratioText) {
+        ratioBar.style.width = `${incomeRatio}%`;
+        ratioText.textContent = `${incomeRatio}% Inflow / ${100 - incomeRatio}% Outflow`;
+      }
+    }
+
+    // --------------------------------------------------------------------------
+    // Slide 2: Expenses View Rendering
+    // --------------------------------------------------------------------------
+    function renderExpenses() {
+      const container = document.getElementById('expenses-container');
+      const searchQuery = (document.getElementById('expense-search')?.value || '').toLowerCase();
+      const categoryFilter = selectedExpenseCategory || 'ALL';
+
+      if (!container) return;
+
+      let filtered = expenseList.filter(item => {
+        const matchesQuery = item.title.toLowerCase().includes(searchQuery) ||
+                             item.category.toLowerCase().includes(searchQuery);
+        const matchesCat = (categoryFilter === 'ALL') || (item.category === categoryFilter);
+        return matchesQuery && matchesCat;
+      });
+
+      // Sort by newest date first
+      filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div style="grid-column: 1/-1; padding: 48px; text-align: center; color: var(--text-muted);" class="glass-card">
+            <p style="font-size: 1.1rem; margin-bottom: 8px;">No giving amount records match your criteria.</p>
+            <button class="btn btn-primary" style="margin-top: 10px;" onclick="openExpenseModal()">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+              <span>Record New Giving Amount</span>
+            </button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => `
+        <div class="glass-card glass-card-interactive expense-card">
+          <button class="btn-delete" onclick="deleteExpense('${item.id}')" title="Delete record">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+          </button>
+          <div class="card-top">
+            <span class="category-tag">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
+                <line x1="7" y1="7" x2="7.01" y2="7"></line>
+              </svg>
+              ${escapeHtml(item.category)}
+            </span>
+            <span class="card-date">${formatDateDisplay(item.date)}</span>
+          </div>
+          <h3 class="card-title">${escapeHtml(item.title)}</h3>
+          <div class="card-amount-expense">
+            -₹${formatCurrency(item.amount)}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // --------------------------------------------------------------------------
+    // Slide 3: Income History Table Rendering
+    // --------------------------------------------------------------------------
+    function renderIncomeTable() {
+      const tbody = document.getElementById('income-table-body');
+      const searchQuery = (document.getElementById('income-search')?.value || '').toLowerCase();
+      if (!tbody) return;
+
+      let filtered = incomeList.filter(item => {
+        return item.fromWho.toLowerCase().includes(searchQuery) ||
+               (item.desc && item.desc.toLowerCase().includes(searchQuery));
+      });
+
+      // Sort by newest date first
+      filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align: center; padding: 40px; color: var(--text-muted);">
+              No income entries found.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(item => `
+        <tr class="income-table-row">
+          <td style="color: var(--text-muted); font-size: 0.88rem;">${formatDateDisplay(item.date)}</td>
+          <td>
+            <div class="source-cell">
+              <div class="source-avatar">${item.fromWho.charAt(0).toUpperCase()}</div>
+              <div>
+                <div>${escapeHtml(item.fromWho)}</div>
+              </div>
+            </div>
+          </td>
+          <td>
+            <span class="income-tag">${escapeHtml(item.desc || 'General Inflow')}</span>
+          </td>
+          <td class="income-amount-cell">+₹${formatCurrency(item.amount)}</td>
+          <td style="text-align: right;">
+            <button class="btn-delete" style="opacity: 0.7;" onclick="deleteIncome('${item.id}')" title="Delete entry">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="3 6 5 6 21 6"></polyline>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+              </svg>
+            </button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // --------------------------------------------------------------------------
+    // CRUD Operations & Modals
+    // --------------------------------------------------------------------------
+    function openExpenseModal() {
+      document.getElementById('exp-date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('modal-expense').style.display = 'flex';
+    }
+
+    function openIncomeModal() {
+      document.getElementById('inc-date').value = new Date().toISOString().split('T')[0];
+      document.getElementById('modal-income').style.display = 'flex';
+    }
+
+    function closeModals() {
+      document.getElementById('modal-expense').style.display = 'none';
+      document.getElementById('modal-income').style.display = 'none';
+    }
+
+    function handleCreateExpense(e) {
+      e.preventDefault();
+      const title = document.getElementById('exp-title').value.trim();
+      const amount = parseFloat(document.getElementById('exp-amount').value);
+      const category = document.getElementById('exp-category').value;
+      const date = document.getElementById('exp-date').value;
+
+      if (!title || isNaN(amount) || amount <= 0) return;
+
+      const newExpense = {
+        id: 'exp-' + Date.now(),
+        title,
+        amount,
+        category,
+        date
+      };
+
+      expenseList.unshift(newExpense);
+      saveState();
+      closeModals();
+      e.target.reset();
+
+      showToast(`Recorded giving amount: ${title}`);
+      updateAllViews();
+    }
+
+    function handleCreateIncome(e) {
+      e.preventDefault();
+      const fromWho = document.getElementById('inc-source').value.trim();
+      const amount = parseFloat(document.getElementById('inc-amount').value);
+      const desc = document.getElementById('inc-desc').value.trim();
+      const date = document.getElementById('inc-date').value;
+
+      if (!fromWho || isNaN(amount) || amount <= 0) return;
+
+      const newIncome = {
+        id: 'inc-' + Date.now(),
+        fromWho,
+        amount,
+        desc,
+        date
+      };
+
+      incomeList.unshift(newIncome);
+      saveState();
+      closeModals();
+      e.target.reset();
+
+      showToast(`Recorded income from ${fromWho}`);
+      updateAllViews();
+    }
+
+    function deleteExpense(id) {
+      if (confirm('Are you sure you want to delete this giving amount record?')) {
+        expenseList = expenseList.filter(item => item.id !== id);
+        saveState();
+        showToast('Giving amount record removed');
+        updateAllViews();
+      }
+    }
+
+    function deleteIncome(id) {
+      if (confirm('Are you sure you want to delete this income entry?')) {
+        incomeList = incomeList.filter(item => item.id !== id);
+        saveState();
+        showToast('Income entry removed');
+        updateAllViews();
+      }
+    }
+
+    function saveState() {
+      localStorage.setItem('snaptrack_ledger_v13_income', JSON.stringify(incomeList));
+      localStorage.setItem('snaptrack_ledger_v13_expenses', JSON.stringify(expenseList));
+    }
+
+    function updateAllViews() {
+      animateOverviewCounters();
+      renderExpenses();
+      renderIncomeTable();
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // --------------------------------------------------------------------------
+    // Initializer
+    // --------------------------------------------------------------------------
+    function initDashboard() {
+      updateAllViews();
+    }
+
+    // Check if session is already active or handle initial state
+    window.addEventListener('DOMContentLoaded', () => {
+      const isLogged = sessionStorage.getItem('snaptrack_logged_in');
+      if (isLogged === 'true') {
+        document.getElementById('login-view').style.display = 'none';
+        document.getElementById('dashboard-view').style.display = 'block';
+        initDashboard();
+      }
+    });
+
+    // Close modal on backdrop click & dismiss custom dropdown on outside click
+    window.addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-backdrop')) {
+        closeModals();
+      }
+      const dropdown = document.getElementById('expense-category-dropdown');
+      if (dropdown && !dropdown.contains(e.target)) {
+        dropdown.classList.remove('open');
+      }
+    });
+  </script>
+</body>
+</html>
