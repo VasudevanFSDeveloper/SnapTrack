@@ -188,6 +188,136 @@ body {
 }
 
 /* ==========================================================================
+   LEFT SLIDE-IN SIDEBAR DRAWER SYSTEM
+   ========================================================================== */
+.sidebar-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(5, 3, 12, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 99990;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.sidebar-backdrop.open {
+  display: block;
+  opacity: 1;
+}
+
+.app-sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 320px;
+  max-width: 85vw;
+  background: rgba(20, 15, 45, 0.98);
+  backdrop-filter: blur(25px);
+  -webkit-backdrop-filter: blur(25px);
+  border-right: 1px solid var(--card-border-strong);
+  box-shadow: 10px 0 35px rgba(0, 0, 0, 0.6);
+  z-index: 100000;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+}
+.app-sidebar.open {
+  transform: translateX(0);
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 1.25rem;
+  border-bottom: 1px solid var(--card-border);
+  background: rgba(15, 12, 33, 0.6);
+}
+
+.sidebar-summary-box {
+  padding: 1.15rem;
+  background: rgba(139, 92, 246, 0.1);
+  border: 1px solid var(--card-border);
+  border-radius: var(--radius-md);
+  margin: 1.25rem 1.25rem 0.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.sidebar-summary-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+.sidebar-summary-label {
+  color: var(--text-muted);
+}
+.sidebar-summary-val {
+  font-weight: 700;
+  font-family: var(--font-body);
+}
+
+.sidebar-nav {
+  padding: 0.75rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+}
+
+.sidebar-nav-heading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  margin: 0.75rem 0 0.25rem 0.5rem;
+}
+
+.sidebar-nav-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  padding: 0.75rem 1rem;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.925rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: var(--transition-fast);
+}
+.sidebar-nav-btn:hover {
+  background: rgba(139, 92, 246, 0.18);
+  border-color: var(--card-border);
+  color: var(--text-primary);
+  transform: translateX(3px);
+}
+.sidebar-nav-btn svg {
+  color: var(--primary-light);
+  flex-shrink: 0;
+}
+
+.sidebar-footer {
+  padding: 1.25rem;
+  border-top: 1px solid var(--card-border);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-align: center;
+  background: rgba(15, 12, 33, 0.4);
+}
+
+/* ==========================================================================
    LAYOUT & STRUCTURAL SHELL
    ========================================================================== */
 .app-shell {

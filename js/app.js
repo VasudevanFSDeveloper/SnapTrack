@@ -121,6 +121,16 @@ function renderSummaryCards() {
 
   const inflowEl = document.getElementById('metric-inflow');
   if (inflowEl) inflowEl.textContent = formatINR(totalIncome);
+
+  // Sync with Sidebar drawer highlights
+  const sBal = document.getElementById('sidebar-metric-balance');
+  if (sBal) sBal.textContent = '₹1,700.00';
+
+  const sInflow = document.getElementById('sidebar-metric-inflow');
+  if (sInflow) sInflow.textContent = formatINR(totalIncome);
+
+  const sExp = document.getElementById('sidebar-metric-expenses');
+  if (sExp) sExp.textContent = formatINR(totalExpenses);
 }
 
 function renderExpenseTable() {
@@ -548,6 +558,48 @@ function updateSliderDots(activeIndex) {
 }
 
 // --------------------------------------------------------------------------
+// LEFT SIDEBAR DRAWER CONTROLLER
+// --------------------------------------------------------------------------
+function toggleSidebar() {
+  const sidebar = document.getElementById('app-sidebar');
+  if (sidebar && sidebar.classList.contains('open')) {
+    closeSidebar();
+  } else {
+    openSidebar();
+  }
+}
+
+function openSidebar() {
+  const sidebar = document.getElementById('app-sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  const btn = document.getElementById('sidebar-toggle-btn');
+  if (sidebar) sidebar.classList.add('open');
+  if (backdrop) backdrop.classList.add('open');
+  if (btn) btn.setAttribute('aria-expanded', 'true');
+  document.body.style.overflow = 'hidden';
+  announceA11y("Navigation sidebar opened.");
+}
+
+function closeSidebar() {
+  const sidebar = document.getElementById('app-sidebar');
+  const backdrop = document.getElementById('sidebar-backdrop');
+  const btn = document.getElementById('sidebar-toggle-btn');
+  if (sidebar) sidebar.classList.remove('open');
+  if (backdrop) backdrop.classList.remove('open');
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+  document.body.style.overflow = '';
+  announceA11y("Navigation sidebar closed.");
+}
+
+function scrollToSection(id) {
+  closeSidebar();
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+// --------------------------------------------------------------------------
 // INITIALIZATION & CONSENT CHECK
 // --------------------------------------------------------------------------
 window.addEventListener('DOMContentLoaded', () => {
@@ -561,5 +613,15 @@ window.addEventListener('DOMContentLoaded', () => {
   const isLogged = sessionStorage.getItem('snaptrack_logged_in') === 'true';
   if (isLogged) {
     transitionToDashboard();
+  }
+});
+
+// Close sidebar on Escape key
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    const sidebar = document.getElementById('app-sidebar');
+    if (sidebar && sidebar.classList.contains('open')) {
+      closeSidebar();
+    }
   }
 });
