@@ -113,9 +113,14 @@ function renderSummaryCards() {
   const totalExpenses = expenseList.reduce((acc, curr) => acc + (Number(curr.amount) || 0), 0);
 
   // Strictly fixed Net Available Balance: ₹1,700.00
-  document.getElementById('metric-balance').textContent = '₹1,700.00';
-  document.getElementById('metric-inflow').textContent = formatINR(totalIncome);
-  document.getElementById('metric-expenses').textContent = formatINR(totalExpenses);
+  const balEl = document.getElementById('metric-balance');
+  if (balEl) balEl.textContent = '₹1,700.00';
+
+  const expEl = document.getElementById('metric-expenses');
+  if (expEl) expEl.textContent = formatINR(totalExpenses);
+
+  const inflowEl = document.getElementById('metric-inflow');
+  if (inflowEl) inflowEl.textContent = formatINR(totalIncome);
 }
 
 function renderExpenseTable() {
