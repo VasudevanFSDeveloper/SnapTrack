@@ -112,13 +112,26 @@
       <!-- VIEW: AUTHENTICATED FINANCIAL DASHBOARD -->
       <section id="dashboard-view" style="display: none;" aria-label="Financial Dashboard Overview">
         
-        <!-- Section: Executive Summary -->
-        <section aria-labelledby="summary-heading">
-          <h2 id="summary-heading" class="sr-only">Executive Financial Summary</h2>
+        <!-- Section: Executive Summary (Interactive Slider Bar) -->
+        <section aria-labelledby="summary-heading" class="slider-section">
+          <div class="slider-header-toolbar">
+            <h2 id="summary-heading" class="slider-section-title">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--primary-light);" aria-hidden="true" focusable="false"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              Executive Insights &amp; Metrics
+            </h2>
+            <div class="slider-controls" aria-label="Slider Navigation Controls">
+              <button type="button" class="btn btn-secondary btn-icon slider-nav-btn" onclick="slideOverview(-1)" aria-label="Previous Slide">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" focusable="false"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <button type="button" class="btn btn-secondary btn-icon slider-nav-btn" onclick="slideOverview(1)" aria-label="Next Slide">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true" focusable="false"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+          </div>
           
-          <div class="overview-grid">
-            <!-- Card 1: Net Available Balance (Strictly ₹1,700.00) -->
-            <article class="metric-card highlight-card" aria-label="Available Net Balance">
+          <div class="overview-slider-track" id="overview-slider-track" tabindex="0" role="region" aria-label="Executive Financial Metrics Carousel" onscroll="handleSliderScroll()">
+            <!-- Slide 1: Available Net Balance (Strictly ₹1,700.00) -->
+            <article class="metric-card highlight-card slide-card" aria-label="Available Net Balance">
               <div class="metric-header">
                 <span class="metric-title">Available Net Balance</span>
                 <div class="metric-icon-wrap" style="background: rgba(139, 92, 246, 0.25); color: #c4b5fd;">
@@ -135,9 +148,23 @@
               </div>
             </article>
 
+            <!-- Slide 2: Inflow / Income Funds -->
+            <article class="metric-card slide-card" aria-label="Total Inflow Funds">
+              <div class="metric-header">
+                <span class="metric-title">Inflow / Income Funds</span>
+                <div class="metric-icon-wrap" style="background: rgba(16, 185, 129, 0.2); color: #34d399;">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+                </div>
+              </div>
+              <div class="metric-value val-income" id="metric-inflow">₹1,800.00</div>
+              <div class="metric-footer">
+                <span class="badge badge-info">2 Inflows Recorded</span>
+                <span>Sharath &amp; Nithish (9 Sep)</span>
+              </div>
+            </article>
 
-            <!-- Card 3: Balance Giving Amount (Expenses) -->
-            <article class="metric-card" aria-label="Balance Giving Amount Total">
+            <!-- Slide 3: Balance Giving Amount (Expenses) -->
+            <article class="metric-card slide-card" aria-label="Balance Giving Amount Total">
               <div class="metric-header">
                 <span class="metric-title">Balance Giving Amount</span>
                 <div class="metric-icon-wrap" style="background: rgba(244, 63, 94, 0.2); color: #fb7185;">
@@ -150,6 +177,13 @@
                 <span>Pending Outflows</span>
               </div>
             </article>
+          </div>
+
+          <!-- Slider Pagination Dots -->
+          <div class="slider-pagination" id="slider-pagination" aria-label="Slider Pagination">
+            <button type="button" class="slider-dot active" onclick="goToSlide(0)" aria-label="Go to Slide 1: Available Net Balance"></button>
+            <button type="button" class="slider-dot" onclick="goToSlide(1)" aria-label="Go to Slide 2: Inflow Funds"></button>
+            <button type="button" class="slider-dot" onclick="goToSlide(2)" aria-label="Go to Slide 3: Balance Giving Amount"></button>
           </div>
         </section>
 

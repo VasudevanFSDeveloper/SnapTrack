@@ -452,8 +452,123 @@ label {
 }
 
 /* ==========================================================================
-   EXECUTIVE SUMMARY & FINANCIAL OVERVIEW METRICS
+   EXECUTIVE SUMMARY & FINANCIAL OVERVIEW METRICS (SLIDER BAR)
    ========================================================================== */
+.slider-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+}
+
+.slider-header-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.slider-section-title {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.slider-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.slider-nav-btn {
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
+  min-width: 40px;
+  border-radius: var(--radius-sm);
+  background: rgba(26, 20, 52, 0.85);
+  border: 1px solid var(--card-border-strong);
+  color: var(--text-primary);
+}
+.slider-nav-btn:hover {
+  background: var(--primary);
+  color: #ffffff;
+  border-color: var(--primary-light);
+}
+
+.overview-slider-track {
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  padding: 0.5rem 0.25rem 1rem 0.25rem;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--primary-light) transparent;
+}
+.overview-slider-track::-webkit-scrollbar {
+  height: 6px;
+}
+.overview-slider-track::-webkit-scrollbar-track {
+  background: rgba(15, 12, 33, 0.5);
+  border-radius: var(--radius-full);
+}
+.overview-slider-track::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: var(--radius-full);
+}
+
+.slide-card {
+  flex: 0 0 calc(33.333% - 1rem);
+  min-width: 310px;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+@media (max-width: 1024px) {
+  .slide-card {
+    flex: 0 0 calc(50% - 0.75rem);
+  }
+}
+@media (max-width: 680px) {
+  .slide-card {
+    flex: 0 0 100%;
+    min-width: 260px;
+  }
+}
+
+.slider-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin-top: 0.25rem;
+}
+
+.slider-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  background: rgba(167, 139, 250, 0.25);
+  border: 1px solid var(--card-border-strong);
+  padding: 0;
+  cursor: pointer;
+  transition: var(--transition-base);
+}
+.slider-dot.active {
+  width: 28px;
+  background: linear-gradient(90deg, var(--primary), #ec4899);
+  border-color: var(--primary-light);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.5);
+}
+.slider-dot:hover {
+  background: var(--primary-light);
+}
+
 .overview-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
